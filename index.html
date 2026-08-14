@@ -1,200 +1,907 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08b875">
-<title>OPay DEMO</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>OPay - Beyond Banking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --green:#08b875;--green2:#00a96c;--dark:#161616;--muted:#777;
-  --bg:#f7faf9;--card:#fff;--line:#e8ecea;--danger:#e53935;
+:root {
+--opay: #1DCF9F;
+--opay-dark: #16a085;
+--opay-light: #e8faf5;
+--bg: #f4f6f9;
+--card: #ffffff;
+--text: #111827;
+--muted: #6b7280;
+--border: #e5e7eb;
+--danger: #ef4444;
+--success: #10b981;
+--shadow: 0 4px 20px rgba(0,0,0,0.06);
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;background:#eef3f1;color:var(--dark)}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{width:100%;max-width:430px;min-height:100vh;margin:auto;background:var(--bg);position:relative;overflow:hidden}
-.screen{display:none;min-height:100vh;padding-bottom:82px}
-.screen.active{display:block}
-.top{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff}
-.back{border:0;background:transparent;font-size:27px;padding:4px}
-.help{color:var(--green2);font-weight:700}
-.logo-wrap{text-align:center;padding:45px 20px 22px;background:#fff}
-.logo{font-size:44px;font-weight:900;letter-spacing:-3px;color:#20135f}
-.logo .o{color:var(--green);display:inline-block}
-.demo{color:var(--green2);font-weight:900;font-size:17px;margin-top:3px}
-.login{background:#fff;min-height:calc(100vh - 58px)}
-.login h1{font-size:34px;margin:48px 30px 38px;letter-spacing:-1px}
-.field{margin:0 30px 20px;position:relative}
-.field label{position:absolute;top:-10px;left:18px;background:#fff;padding:0 5px;color:#b8bdbb;font-size:14px}
-.field input{width:100%;height:68px;border:1px solid #e1e5e3;border-radius:15px;padding:0 20px;font-size:20px;outline:none}
-.field input:focus{border-color:var(--green)}
-.linkrow{margin:0 30px;color:#999}.linkrow span{color:var(--green2);font-weight:700}
-.primary{border:0;background:var(--green);color:#fff;font-weight:800;border-radius:38px;height:58px;width:calc(100% - 60px);margin:78px 30px 20px;font-size:18px;box-shadow:0 7px 20px #08b8752b}
-.center{text-align:center;color:#666}.center b{color:var(--green2)}
-.pin{text-align:center;background:#fff;min-height:100vh;padding-bottom:30px}
-.pin h2{margin:35px 0 8px;font-size:28px}.pin p{color:#777}
-.pinbox{display:flex;gap:12px;justify-content:center;margin:35px 0}
-.pinbox i{width:56px;height:56px;border:1px solid #dce4e1;border-radius:12px;display:grid;place-items:center;font-style:normal;font-size:28px}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:320px;margin:auto}
-.key{height:64px;border:0;background:#fff;font-size:25px;border-radius:14px}.key:active{background:#e9f8f2}
-.forgot{color:var(--green2);font-weight:700}
-.home-head{padding:22px 20px 12px;display:flex;justify-content:space-between;align-items:center}
-.home-head strong{font-size:18px}.bell{font-size:22px}
-.balance{margin:8px 18px;background:linear-gradient(135deg,#05ad71,#09bd7b);color:#fff;border-radius:17px;padding:20px;box-shadow:0 10px 25px #08b87535}
-.balance small{opacity:.9}.balance h2{font-size:30px;margin:6px 0}.balance p{margin:0;font-size:12px;opacity:.9}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 16px 5px}
-.q{background:#fff;border:0;text-align:center;padding:8px 2px;border-radius:14px;font-size:12px}.q .ico{width:39px;height:39px;border-radius:12px;background:#e7f7f1;color:var(--green2);display:grid;place-items:center;margin:auto auto 6px;font-size:18px;font-weight:800}
-.section{padding:14px 18px 4px;font-weight:800;font-size:17px}
-.services{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:8px 16px}
-.service{background:#fff;border:0;border-radius:14px;padding:10px 2px;text-align:center;font-size:11px}.service span{display:grid;place-items:center;width:38px;height:38px;margin:auto auto 5px;border-radius:12px;background:#eff9f5;color:var(--green2);font-size:18px}
-.tx{margin:8px 16px;background:#fff;border-radius:16px;overflow:hidden}.txrow{display:flex;align-items:center;gap:12px;padding:15px;border-bottom:1px solid var(--line)}.txrow:last-child{border-bottom:0}.txico{width:40px;height:40px;border-radius:50%;background:#e7f7f1;color:var(--green2);display:grid;place-items:center;font-weight:900}.txmain{flex:1}.txmain b{display:block;font-size:13px}.txmain small{color:#999}.amt{text-align:right;font-weight:800;font-size:13px}.out{color:#222}.success{color:var(--green2);font-size:11px}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);height:76px;background:#fff;border-top:1px solid #e7ecea;display:grid;grid-template-columns:repeat(5,1fr);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
-.nav button{border:0;background:#fff;color:#777;font-size:11px;font-weight:700}.nav button.active{color:var(--green2)}.nav .ni{font-size:20px;display:block;margin-bottom:4px}
-.page{padding:16px 18px 100px}.page h2{font-size:25px;margin:8px 0 20px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;margin-bottom:14px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
-.green-card{background:linear-gradient(135deg,#04ae70,#06bd7a);color:#fff;border:0}.green-card h2{font-size:28px}
-.form input,.form select,.form textarea{width:100%;height:54px;border:1px solid #dfe6e3;border-radius:12px;padding:0 14px;margin:7px 0 14px;background:#fff}.form textarea{height:90px;padding-top:14px}.label{font-size:12px;color:#777}
-.fullbtn{width:100%;height:55px;border:0;border-radius:28px;background:var(--green);color:#fff;font-weight:800;margin-top:8px}
-.confirm{text-align:center}.avatar{width:68px;height:68px;border-radius:50%;background:#dff7ed;color:var(--green2);display:grid;place-items:center;margin:8px auto;font-size:24px;font-weight:900}
-.check{width:80px;height:80px;border-radius:50%;background:#dff7ed;color:var(--green2);display:grid;place-items:center;font-size:45px;margin:20px auto}
-.receipt{font-size:13px;color:#777}.receipt b{color:#222;float:right}
-.tabs{display:flex;gap:8px;margin-bottom:15px}.tab{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 14px;font-size:12px}.tab.active{background:var(--green);color:#fff;border-color:var(--green)}
-.virtual{background:linear-gradient(135deg,#111827,#263448);color:#fff;border-radius:16px;padding:20px;height:190px;position:relative;overflow:hidden}.virtual .brand{font-weight:900;font-size:18px}.virtual .number{font-size:22px;letter-spacing:2px;margin-top:42px}.virtual .visa{position:absolute;right:18px;bottom:18px;font-size:22px;font-style:italic;font-weight:900}
-.profile-head{background:linear-gradient(135deg,#05ad71,#08bd7a);color:#fff;padding:30px 20px;border-radius:0 0 25px 25px}.profile-head .avatar{margin:0 0 12px;background:#dff7ed;color:var(--green2)}.menu{background:#fff;border-radius:16px;margin-top:15px;overflow:hidden}.menu .row{padding:18px}.danger{color:#e53935!important}
-.notice{margin:12px 18px;background:#fff8dc;border:1px solid #f0df91;color:#735d00;border-radius:12px;padding:10px;font-size:12px}
-@media(max-width:360px){.logo{font-size:38px}.login h1{font-size:29px}.balance h2{font-size:25px}}
+
+[data-theme="dark"] {
+--bg: #0f172a;
+--card: #1e293b;
+--text: #f1f5f9;
+--muted: #94a3b8;
+--border: #334155;
+--opay-light: #0f3d32;
+--shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+font-family: 'Inter', system-ui, sans-serif;
+background: #d1d5db;
+color: var(--text);
+min-height: 100dvh;
+display: flex;
+justify-content: center;
+}
+
+.phone {
+width: 100%;
+max-width: 430px;
+min-height: 100dvh;
+background: var(--bg);
+position: relative;
+overflow: hidden;
+transition: background 0.3s;
+}
+
+/* ========== LOGIN ========== */
+#login-screen {
+min-height: 100dvh;
+background: linear-gradient(160deg, #1DCF9F 0%, #0f9b7a 100%);
+display: flex;
+flex-direction: column;
+padding: 48px 28px 40px;
+color: white;
+}
+
+.login-logo {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 50px;
+}
+
+.logo-circle {
+width: 48px;
+height: 48px;
+background: white;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 800;
+font-size: 22px;
+color: var(--opay);
+}
+
+.login-logo span { font-size: 26px; font-weight: 700; }
+
+.login-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.login-header p { opacity: 0.9; font-size: 15px; margin-bottom: 36px; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; margin-bottom: 6px; opacity: 0.9; }
+.form-group input {
+width: 100%;
+padding: 15px 16px;
+border: none;
+border-radius: 12px;
+font-size: 16px;
+background: rgba(255,255,255,0.18);
+color: white;
+outline: none;
+}
+.form-group input::placeholder { color: rgba(255,255,255,0.55); }
+
+.login-btn {
+width: 100%;
+padding: 16px;
+margin-top: 12px;
+border: none;
+border-radius: 14px;
+background: white;
+color: var(--opay-dark);
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.demo-hint { text-align: center; margin-top: 24px; font-size: 13px; opacity: 0.8; }
+
+/* ========== APP ========== */
+#app { display: none; flex-direction: column; min-height: 100dvh; }
+
+.app-header {
+background: linear-gradient(135deg, #1DCF9F, #16a085);
+color: white;
+padding: 18px 20px 26px;
+border-radius: 0 0 28px 28px;
+}
+
+.header-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+
+.user-info { display: flex; align-items: center; gap: 12px; }
+.avatar {
+width: 44px; height: 44px; border-radius: 50%;
+background: white; color: var(--opay-dark);
+display: flex; align-items: center; justify-content: center;
+font-weight: 700; font-size: 16px;
+}
+.greeting { font-size: 13px; opacity: 0.9; }
+.greeting strong { display: block; font-size: 17px; font-weight: 600; margin-top: 2px; }
+
+.balance-card {
+background: rgba(255,255,255,0.15);
+border-radius: 18px;
+padding: 18px 20px;
+backdrop-filter: blur(8px);
+}
+.balance-label { font-size: 13px; opacity: 0.85; margin-bottom: 4px; }
+.balance-row { display: flex; justify-content: space-between; align-items: center; }
+.balance-amount { font-size: 28px; font-weight: 700; letter-spacing: -0.8px; }
+.eye-btn {
+background: rgba(255,255,255,0.2);
+border: none;
+width: 36px; height: 36px;
+border-radius: 50%;
+color: white;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer;
+}
+.account-number { font-size: 13px; margin-top: 8px; opacity: 0.85; }
+
+.content {
+flex: 1;
+padding: 20px 16px 110px;
+overflow-y: auto;
+}
+
+/* Quick Actions */
+.quick-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 12px;
+margin-bottom: 28px;
+}
+.quick-item {
+display: flex; flex-direction: column; align-items: center; gap: 8px;
+background: none; border: none; cursor: pointer;
+}
+.quick-icon {
+width: 54px; height: 54px; border-radius: 16px;
+background: var(--opay-light);
+display: flex; align-items: center; justify-content: center;
+color: var(--opay-dark);
+transition: transform 0.15s;
+}
+.quick-item:active .quick-icon { transform: scale(0.92); }
+.quick-icon svg { width: 24px; height: 24px; }
+.quick-item span { font-size: 12px; font-weight: 500; color: var(--text); }
+
+.section-title {
+font-size: 16px; font-weight: 600; margin-bottom: 14px;
+display: flex; justify-content: space-between; align-items: center;
+}
+.section-title span { font-size: 13px; color: var(--opay); font-weight: 500; cursor: pointer; }
+
+/* Transactions */
+.tx-list { display: flex; flex-direction: column; gap: 10px; }
+.tx-item {
+background: var(--card);
+border-radius: 14px;
+padding: 14px 16px;
+display: flex; align-items: center; gap: 14px;
+box-shadow: var(--shadow);
+}
+.tx-icon {
+width: 42px; height: 42px; border-radius: 12px;
+display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.tx-icon.in { background: #d1fae5; color: var(--success); }
+.tx-icon.out { background: #fee2e2; color: var(--danger); }
+[data-theme="dark"] .tx-icon.in { background: #064e3b; }
+[data-theme="dark"] .tx-icon.out { background: #7f1d1d; }
+
+.tx-details { flex: 1; min-width: 0; }
+.tx-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tx-amount { font-size: 14px; font-weight: 600; white-space: nowrap; }
+.tx-amount.in { color: var(--success); }
+
+/* Forms (Transfer / Airtime) */
+.page-header {
+display: flex; align-items: center; gap: 14px;
+margin-bottom: 24px;
+padding-top: 8px;
+}
+.back-btn {
+width: 40px; height: 40px; border-radius: 12px;
+background: var(--card); border: none;
+display: flex; align-items: center; justify-content: center;
+color: var(--text); cursor: pointer;
+box-shadow: var(--shadow);
+}
+.page-header h2 { font-size: 18px; font-weight: 600; }
+
+.input-group { margin-bottom: 18px; }
+.input-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--muted); }
+.input-group input, .input-group select {
+width: 100%;
+padding: 14px 16px;
+border: 1.5px solid var(--border);
+border-radius: 12px;
+font-size: 15px;
+background: var(--card);
+color: var(--text);
+outline: none;
+transition: border 0.2s;
+}
+.input-group input:focus, .input-group select:focus { border-color: var(--opay); }
+
+.amount-display {
+background: var(--card);
+border-radius: 16px;
+padding: 20px;
+text-align: center;
+margin-bottom: 20px;
+box-shadow: var(--shadow);
+}
+.amount-display .label { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.amount-display .value { font-size: 32px; font-weight: 700; color: var(--opay); }
+
+.primary-btn {
+width: 100%;
+padding: 16px;
+border: none;
+border-radius: 14px;
+background: var(--opay);
+color: white;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+margin-top: 8px;
+}
+.primary-btn:active { opacity: 0.9; transform: scale(0.98); }
+
+.network-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+margin-bottom: 20px;
+}
+.network-btn {
+padding: 12px 8px;
+border: 1.5px solid var(--border);
+border-radius: 12px;
+background: var(--card);
+font-size: 13px;
+font-weight: 500;
+color: var(--text);
+cursor: pointer;
+text-align: center;
+}
+.network-btn.active {
+border-color: var(--opay);
+background: var(--opay-light);
+color: var(--opay-dark);
+}
+
+/* Profile */
+.profile-card {
+background: var(--card);
+border-radius: 20px;
+padding: 28px 20px;
+text-align: center;
+margin-bottom: 20px;
+box-shadow: var(--shadow);
+}
+.profile-avatar {
+width: 76px; height: 76px; border-radius: 50%;
+background: linear-gradient(135deg, #1DCF9F, #16a085);
+color: white; font-size: 28px; font-weight: 700;
+display: flex; align-items: center; justify-content: center;
+margin: 0 auto 14px;
+}
+.profile-name { font-size: 20px; font-weight: 700; }
+.profile-phone { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+.info-list {
+background: var(--card);
+border-radius: 16px;
+overflow: hidden;
+margin-bottom: 16px;
+box-shadow: var(--shadow);
+}
+.info-row {
+display: flex; justify-content: space-between; align-items: center;
+padding: 16px 18px;
+border-bottom: 1px solid var(--border);
+font-size: 14px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: var(--muted); }
+.info-row .value { font-weight: 500; }
+
+.toggle-row {
+display: flex; justify-content: space-between; align-items: center;
+padding: 16px 18px;
+}
+.switch {
+position: relative; width: 48px; height: 28px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+position: absolute; cursor: pointer;
+top: 0; left: 0; right: 0; bottom: 0;
+background: #cbd5e1; border-radius: 28px;
+transition: 0.3s;
+}
+.slider:before {
+position: absolute; content: "";
+height: 22px; width: 22px;
+left: 3px; bottom: 3px;
+background: white; border-radius: 50%;
+transition: 0.3s;
+}
+input:checked + .slider { background: var(--opay); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+.logout-btn {
+width: 100%;
+padding: 15px;
+border: 1.5px solid var(--danger);
+border-radius: 14px;
+background: transparent;
+color: var(--danger);
+font-size: 15px;
+font-weight: 600;
+cursor: pointer;
+margin-top: 8px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+width: 100%; max-width: 430px;
+background: var(--card);
+border-top: 1px solid var(--border);
+display: flex; justify-content: space-around;
+padding: 10px 0 18px;
+z-index: 50;
+box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+.nav-item {
+display: flex; flex-direction: column; align-items: center; gap: 4px;
+background: none; border: none;
+color: #9ca3af; font-size: 11px; font-weight: 500;
+cursor: pointer; padding: 4px 12px;
+}
+.nav-item.active { color: var(--opay); }
+.nav-item svg { width: 24px; height: 24px; }
+
+/* Modal */
+.modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.5);
+display: none; align-items: flex-end; justify-content: center;
+z-index: 100;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+background: var(--card);
+width: 100%; max-width: 430px;
+border-radius: 24px 24px 0 0;
+padding: 28px 24px 40px;
+animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+from { transform: translateY(100%); }
+to { transform: translateY(0); }
+}
+.modal h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; text-align: center; }
+.modal p { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+.pin-inputs {
+display: flex; gap: 12px; justify-content: center; margin-bottom: 28px;
+}
+.pin-inputs input {
+width: 52px; height: 56px;
+border: 1.5px solid var(--border);
+border-radius: 12px;
+text-align: center;
+font-size: 22px; font-weight: 600;
+background: var(--bg);
+color: var(--text);
+outline: none;
+}
+.pin-inputs input:focus { border-color: var(--opay); }
+
+/* Success Toast */
+.toast {
+position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px);
+background: var(--success); color: white;
+padding: 14px 24px; border-radius: 12px;
+font-size: 14px; font-weight: 500;
+z-index: 200; opacity: 0;
+transition: all 0.35s ease;
+max-width: 90%;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+.placeholder-card {
+background: var(--card);
+border-radius: 18px;
+padding: 40px 24px;
+text-align: center;
+box-shadow: var(--shadow);
+margin-top: 20px;
+}
+.placeholder-card h3 { font-size: 18px; margin-bottom: 8px; }
+.placeholder-card p { color: var(--muted); font-size: 14px; }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="phone">
 
 <!-- LOGIN -->
-<section id="login" class="screen active login">
-  <div class="top"><button class="back" aria-label="back">‹</button><span class="help">Help</span></div>
-  <div class="logo-wrap"><div class="logo"><span class="o">◉</span>Pay</div><div class="demo">DEMO</div></div>
-  <h1>Log in to your account</h1>
-  <div class="field"><label>Enter your Mobile No./Email</label><input id="phone" value="09076657997" inputmode="numeric"></div>
-  <div class="linkrow">Lost Your Mobile Number, <span>Change Now</span></div>
-  <button class="primary" onclick="go('pin')">NEXT</button>
-  <div class="center">Don't have an OPay Account yet? <b>SIGN UP</b></div>
-  <div class="notice">OPay DEMO is a fictional educational prototype. No real payments, bank accounts or credentials are connected.</div>
-</section>
+<div id="login-screen">
+<div class="login-logo">
+<div class="logo-circle">O</div>
+<span>OPay</span>
+</div>
+<div class="login-header">
+<h1>Welcome back</h1>
+<p>Sign in to your OPay account</p>
+</div>
+<form onsubmit="return handleLogin(event)">
+<div class="form-group">
+<label>Phone Number</label>
+<input type="tel" placeholder="0801 234 5678" value="08012345678" required />
+</div>
+<div class="form-group">
+<label>Password / PIN</label>
+<input type="password" placeholder="••••" value="1234" required />
+</div>
+<button type="submit" class="login-btn">Sign In</button>
+</form>
+<p class="demo-hint">Demo mode — any credentials work</p>
+</div>
 
-<!-- PIN -->
-<section id="pin" class="screen pin">
-  <div class="top"><button class="back" onclick="go('login')">‹</button><span class="help">Help</span></div>
-  <div class="logo-wrap"><div class="logo"><span class="o">◉</span>Pay</div><div class="demo">DEMO</div></div>
-  <h2>Enter your PIN</h2><p>Enter the 4-digit demo PIN</p>
-  <div class="pinbox"><i id="p1"></i><i id="p2"></i><i id="p3"></i><i id="p4"></i></div>
-  <div class="forgot">Forgot PIN?</div>
-  <div class="keypad">
-    <button class="key" onclick="key(1)">1</button><button class="key" onclick="key(2)">2</button><button class="key" onclick="key(3)">3</button>
-    <button class="key" onclick="key(4)">4</button><button class="key" onclick="key(5)">5</button><button class="key" onclick="key(6)">6</button>
-    <button class="key" onclick="key(7)">7</button><button class="key" onclick="key(8)">8</button><button class="key" onclick="key(9)">9</button>
-    <button class="key" onclick="clearPin()">⌫</button><button class="key" onclick="key(0)">0</button><button class="key" onclick="go('home')">✓</button>
-  </div>
-  <div class="notice">Demo only — any 4 digits will open the fictional dashboard.</div>
-</section>
+<!-- MAIN APP -->
+<div id="app">
+<!-- HOME HEADER -->
+<div class="app-header" id="home-header">
+<div class="header-top">
+<div class="user-info">
+<div class="avatar">JD</div>
+<div class="greeting">
+Good evening
+<strong>John Doe</strong>
+</div>
+</div>
+</div>
+<div class="balance-card">
+<div class="balance-label">Available Balance</div>
+<div class="balance-row">
+<div class="balance-amount" id="balance-display">₦248,750.00</div>
+<button class="eye-btn" onclick="toggleBalance()">
+<svg id="eye-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+</svg>
+</button>
+</div>
+<div class="account-number">Account •• 4821 &nbsp;•&nbsp; OPay Wallet</div>
+</div>
+</div>
 
+<div class="content">
 <!-- HOME -->
-<section id="home" class="screen">
-  <div class="home-head"><strong>Hello, Demo User</strong><span class="bell">♧</span></div>
-  <div class="balance"><small>Available Balance　◉</small><h2>₦250,000.00</h2><p>Ledger Balance: ₦250,000.00　›</p></div>
-  <div class="quick">
-    <button class="q" onclick="go('add')"><span class="ico">＋</span>Add Money</button>
-    <button class="q" onclick="go('transfer')"><span class="ico">↔</span>Transfer</button>
-    <button class="q"><span class="ico">▣</span>Withdraw</button>
-    <button class="q" onclick="go('transactions')"><span class="ico">▤</span>History</button>
-  </div>
-  <div class="section">We've got you covered</div>
-  <div class="services">
-    <button class="service" onclick="go('payments')"><span>▥</span>Airtime</button>
-    <button class="service"><span>⌁</span>Data</button><button class="service"><span>▤</span>Bills</button><button class="service"><span>⌂</span>Betting</button>
-    <button class="service"><span>▭</span>Cable TV</button><button class="service"><span>◉</span>Electricity</button><button class="service"><span>♢</span>Insurance</button><button class="service"><span>•••</span>More</button>
-  </div>
-  <div class="section" style="display:flex;justify-content:space-between">Recent Transactions <span style="color:var(--green2);font-size:12px" onclick="go('transactions')">See All</span></div>
-  <div class="tx">
-    <div class="txrow"><div class="txico">↗</div><div class="txmain"><b>Transfer to John Doe</b><small>Today, 5:36 PM</small></div><div class="amt out">- ₦20,000.00<div class="success">Successful</div></div></div>
-    <div class="txrow"><div class="txico">↓</div><div class="txmain"><b>Add Money</b><small>Today, 4:12 PM</small></div><div class="amt">+ ₦50,000.00<div class="success">Successful</div></div></div>
-  </div>
-  <Nav active="home"/>
-</section>
+<div id="view-home" class="view active">
+<div class="quick-grid">
+<button class="quick-item" onclick="openTransfer()">
+<div class="quick-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
+<span>Transfer</span>
+</button>
+<button class="quick-item" onclick="openAirtime()">
+<div class="quick-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
+<span>Airtime</span>
+</button>
+<button class="quick-item" onclick="openAirtime()">
+<div class="quick-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg></div>
+<span>Data</span>
+</button>
+<button class="quick-item">
+<div class="quick-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+<span>Bills</span>
+</button>
+</div>
+
+<div class="section-title">
+Recent Transactions
+<span onclick="switchView('history')">See all</span>
+</div>
+<div class="tx-list" id="home-tx"></div>
+</div>
 
 <!-- TRANSFER -->
-<section id="transfer" class="screen">
-  <div class="top"><button class="back" onclick="go('home')">‹</button><b>Transfer</b><span></span></div>
-  <div class="page"><h2>Send Money</h2>
-    <div class="card form">
-      <div class="label">Recipient</div><input id="recipient" placeholder="Enter name or OPay number">
-      <div class="label">OPay Number</div><input id="opayno" placeholder="Enter 11-digit OPay number" inputmode="numeric">
-      <div class="label">Amount</div><input id="amount" placeholder="₦ 0.00" inputmode="decimal">
-      <div class="label">Narration (Optional)</div><textarea id="note" placeholder="What's this for?"></textarea>
-      <button class="fullbtn" onclick="confirmTransfer()">CONTINUE</button>
-    </div>
-  </div>
-</section>
+<div id="view-transfer" class="view">
+<div class="page-header">
+<button class="back-btn" onclick="switchView('home')">
+<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+</button>
+<h2>Transfer Money</h2>
+</div>
 
-<!-- CONFIRM -->
-<section id="confirm" class="screen">
- <div class="top"><button class="back" onclick="go('transfer')">‹</button><b>Confirm Transfer</b><span></span></div>
- <div class="page confirm"><div class="card"><div class="avatar" id="cavatar">JD</div><h2 id="cname">John Doe</h2><span class="success">OPay DEMO</span><hr>
- <div class="receipt"><p>Amount <b id="camount">₦20,000.00</b></p><p>Transaction Fee <b>₦0.00</b></p><p>Total Amount <b id="ctotal">₦20,000.00</b></p><p>Narration <b id="cnote">Payment</b></p></div>
- <button class="fullbtn" onclick="successTransfer()">CONFIRM</button></div></div>
-</section>
+<div class="input-group">
+<label>Recipient Account Number</label>
+<input type="text" id="transfer-account" placeholder="Enter 10-digit account number" maxlength="10" />
+</div>
+<div class="input-group">
+<label>Bank</label>
+<select id="transfer-bank">
+<option value="">Select Bank</option>
+<option>OPay</option>
+<option>GTBank</option>
+<option>Access Bank</option>
+<option>Zenith Bank</option>
+<option>UBA</option>
+<option>First Bank</option>
+<option>Kuda</option>
+<option>PalmPay</option>
+</select>
+</div>
+<div class="input-group">
+<label>Amount (₦)</label>
+<input type="number" id="transfer-amount" placeholder="0.00" min="100" />
+</div>
+<div class="input-group">
+<label>Narration (optional)</label>
+<input type="text" id="transfer-narration" placeholder="What's this for?" />
+</div>
+<button class="primary-btn" onclick="startTransfer()">Continue</button>
+</div>
 
-<!-- SUCCESS -->
-<section id="success" class="screen">
- <div class="top"><button class="back" onclick="go('home')">‹</button><b>Transfer Successful</b><span></span></div>
- <div class="page confirm"><div class="card"><div class="check">✓</div><h2>Transfer Successful</h2><p>You have successfully sent</p><h2 style="color:var(--green2)" id="samount">₦20,000.00</h2><p>to <b id="sname">John Doe</b></p><div class="receipt"><p>Reference No. <b>OP1234567990</b></p></div><button class="fullbtn" onclick="go('home')">BACK TO HOME</button><button class="fullbtn" style="background:#fff;color:var(--green2);border:1px solid var(--green)" onclick="go('home')">SHARE RECEIPT</button></div></div>
-</section>
+<!-- AIRTIME -->
+<div id="view-airtime" class="view">
+<div class="page-header">
+<button class="back-btn" onclick="switchView('home')">
+<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+</button>
+<h2>Buy Airtime</h2>
+</div>
 
-<!-- TRANSACTIONS -->
-<section id="transactions" class="screen"><div class="top"><button class="back" onclick="go('home')">‹</button><b>Transactions</b><span></span></div><div class="page"><div class="tabs"><button class="tab active">All</button><button class="tab">Money In</button><button class="tab">Money Out</button></div><div class="section" style="padding-left:0">Today</div><div class="tx">
-<div class="txrow"><div class="txico">↗</div><div class="txmain"><b>Transfer to John Doe</b><small>5:36 PM</small></div><div class="amt">- ₦20,000.00<div class="success">Successful</div></div></div>
-<div class="txrow"><div class="txico">↓</div><div class="txmain"><b>Add Money</b><small>4:12 PM</small></div><div class="amt">+ ₦50,000.00<div class="success">Successful</div></div></div>
-<div class="txrow"><div class="txico">▥</div><div class="txmain"><b>Airtime Purchase</b><small>2:45 PM</small></div><div class="amt">- ₦1,000.00<div class="success">Successful</div></div></div>
-<div class="txrow"><div class="txico">⌁</div><div class="txmain"><b>Data Purchase</b><small>8:30 PM</small></div><div class="amt">- ₦2,000.00<div class="success">Successful</div></div></div></div></div><Nav active="transactions"/></section>
+<div class="input-group">
+<label>Phone Number</label>
+<input type="tel" id="airtime-phone" placeholder="0801 234 5678" value="08012345678" />
+</div>
 
-<!-- PAYMENTS -->
-<section id="payments" class="screen"><div class="top"><button class="back" onclick="go('home')">‹</button><b>Payments</b><span></span></div><div class="page"><h2>Buy Airtime</h2><div class="card form"><div class="label">Enter phone number</div><input placeholder="09000000000" inputmode="numeric"><div class="label">Select Network</div><select><option>Choose network</option><option>MTN</option><option>Airtel</option><option>Glo</option><option>9mobile</option></select><div class="label">Amount</div><input placeholder="₦ 0.00" inputmode="decimal"><button class="fullbtn" onclick="alert('Demo only: no real payment was made.')">BUY AIRTIME</button></div><div class="section" style="padding-left:0">Quick Access</div><div class="services"><button class="service"><span>⌁</span>Data</button><button class="service"><span>▭</span>Cable TV</button><button class="service"><span>◉</span>Electricity</button><button class="service"><span>▤</span>Bills</button></div></div><Nav active="payments"/></section>
+<div class="input-group">
+<label>Select Network</label>
+<div class="network-grid">
+<button class="network-btn active" data-net="MTN" onclick="selectNetwork(this)">MTN</button>
+<button class="network-btn" data-net="Airtel" onclick="selectNetwork(this)">Airtel</button>
+<button class="network-btn" data-net="Glo" onclick="selectNetwork(this)">Glo</button>
+<button class="network-btn" data-net="9mobile" onclick="selectNetwork(this)">9mobile</button>
+</div>
+</div>
 
-<!-- CARDS -->
-<section id="cards" class="screen"><div class="top"><button class="back" onclick="go('home')">‹</button><b>Cards</b><span></span></div><div class="page"><div class="virtual"><div class="brand">◉Pay DEMO</div><small>Virtual Card</small><div class="number">•••• •••• •••• 1234</div><small>Valid Thru　12/26　　CVV　•••</small><div class="visa">VISA</div></div><div class="quick"><button class="q"><span class="ico">＋</span>Fund Card</button><button class="q"><span class="ico">▣</span>Card Details</button><button class="q"><span class="ico">◉</span>Freeze Card</button><button class="q"><span class="ico">↗</span>More</button></div><div class="section" style="padding-left:0">Transactions <span style="float:right;color:var(--green2);font-size:12px">See All</span></div><div class="tx"><div class="txrow"><div class="txico">N</div><div class="txmain"><b>Netflix</b><small>May 10, 5:20 PM</small></div><div class="amt">- ₦4,500</div></div><div class="txrow"><div class="txico">S</div><div class="txmain"><b>Spotify</b><small>May 8, 9:15 AM</small></div><div class="amt">- ₦1,200</div></div></div></div><Nav active="cards"/></section>
+<div class="input-group">
+<label>Amount (₦)</label>
+<input type="number" id="airtime-amount" placeholder="100, 200, 500..." min="50" />
+</div>
+
+<button class="primary-btn" onclick="startAirtime()">Buy Airtime</button>
+</div>
+
+<!-- HISTORY -->
+<div id="view-history" class="view">
+<div class="page-header">
+<button class="back-btn" onclick="switchView('home')">
+<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+</button>
+<h2>Transaction History</h2>
+</div>
+<div class="tx-list" id="full-tx"></div>
+</div>
 
 <!-- FINANCE -->
-<section id="finance" class="screen"><div class="top"><button class="back" onclick="go('home')">‹</button><b>Finance</b><span></span></div><div class="page"><div class="card green-card"><small>Total Savings Balance</small><h2>₦100,000.00</h2><span>›</span></div><div class="section" style="padding-left:0">Savings</div><div class="card"><div class="row"><span>▣　Target Savings<br><small>₦60,000.00</small></span><b>›</b></div><div class="row"><span>▣　Fixed Savings<br><small>₦40,000.00</small></span><b>›</b></div></div><div class="section" style="padding-left:0">Investments</div><div class="card"><div class="row"><span>◉　OPay Fixed Investment<br><small>Earn up to 15% p.a. — demo</small></span><b>›</b></div></div><div class="section" style="padding-left:0">Loans</div><div class="card"><div class="row"><span>▣　Get a loan<br><small>Quick and easy loans — demo</small></span><b>›</b></div></div></div><Nav active="finance"/></section>
-
-<!-- PROFILE -->
-<section id="profile" class="screen"><div class="profile-head"><div class="avatar">DU</div><h2 style="margin:0 0 5px">Demo User</h2><div>09076657997</div><span style="font-size:12px">✓ Verified (Demo)</span></div><div class="page"><div class="menu"><div class="row">Profile <b>›</b></div><div class="row">Account Security <b>›</b></div><div class="row">Privacy <b>›</b></div><div class="row">Notification Settings <b>›</b></div><div class="row">Help Center <b>›</b></div><div class="row">About OPay DEMO <b>›</b></div><div class="row danger" onclick="go('login')">Log Out <b>›</b></div></div><div class="notice">Fictional prototype. This app uses demo data only. No real OPay account, payment credential, OTP or bank connection is used.</div></div><Nav active="profile"/></section>
-
+<div id="view-finance" class="view">
+<div class="placeholder-card">
+<h3>💰 Finance</h3>
+<p>OWealth • Savings • Loans<br>Coming soon in this demo</p>
 </div>
+</div>
+
+<!-- REWARDS -->
+<div id="view-rewards" class="view">
+<div class="placeholder-card">
+<h3>🎁 Rewards</h3>
+<p>Cashback • OCoins • Referrals<br>Coming soon in this demo</p>
+</div>
+</div>
+
+<!-- ME / PROFILE -->
+<div id="view-me" class="view">
+<div class="profile-card">
+<div class="profile-avatar">JD</div>
+<div class="profile-name">John Doe</div>
+<div class="profile-phone">0801 234 5678</div>
+</div>
+
+<div class="info-list">
+<div class="info-row">
+<span class="label">Account Number</span>
+<span class="value">908 4821 339</span>
+</div>
+<div class="info-row">
+<span class="label">Account Type</span>
+<span class="value">OPay Wallet</span>
+</div>
+<div class="info-row">
+<span class="label">Tier</span>
+<span class="value">Tier 2</span>
+</div>
+<div class="toggle-row">
+<span class="label">Dark Mode</span>
+<label class="switch">
+<input type="checkbox" id="dark-toggle" onchange="toggleDarkMode()">
+<span class="slider"></span>
+</label>
+</div>
+</div>
+
+<button class="logout-btn" onclick="logout()">Log Out</button>
+</div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav" id="bottom-nav">
+<button class="nav-item active" data-view="home" onclick="switchView('home')">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+Home
+</button>
+<button class="nav-item" data-view="finance" onclick="switchView('finance')">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+Finance
+</button>
+<button class="nav-item" data-view="rewards" onclick="switchView('rewards')">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+Rewards
+</button>
+<button class="nav-item" data-view="me" onclick="switchView('me')">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+Me
+</button>
+</nav>
+</div>
+</div>
+
+<!-- PIN Modal -->
+<div class="modal-overlay" id="pin-modal">
+<div class="modal">
+<h3>Enter Transaction PIN</h3>
+<p id="pin-desc">Confirm your transaction</p>
+<div class="pin-inputs">
+<input type="password" maxlength="1" inputmode="numeric" oninput="movePin(this, 1)" />
+<input type="password" maxlength="1" inputmode="numeric" oninput="movePin(this, 2)" />
+<input type="password" maxlength="1" inputmode="numeric" oninput="movePin(this, 3)" />
+<input type="password" maxlength="1" inputmode="numeric" oninput="movePin(this, 4)" />
+</div>
+<button class="primary-btn" onclick="confirmPin()">Confirm</button>
+</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
-let pin='', transferData={name:'John Doe',amount:'20000',note:'Payment'};
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
-function key(n){if(pin.length>=4)return;pin+=n;renderPin();if(pin.length===4)setTimeout(()=>go('home'),250)}
-function clearPin(){pin=pin.slice(0,-1);renderPin()}
-function renderPin(){[1,2,3,4].forEach((x,i)=>document.getElementById('p'+x).textContent=pin[i]?'•':'')}
-function confirmTransfer(){
- const n=document.getElementById('recipient').value.trim()||'John Doe';
- const a=document.getElementById('amount').value.replace(/[₦,\s]/g,'')||'20000';
- const note=document.getElementById('note').value.trim()||'Payment';
- transferData={name:n,amount:a,note};
- document.getElementById('cname').textContent=n;
- document.getElementById('cavatar').textContent=n.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
- document.getElementById('camount').textContent='₦'+Number(a).toLocaleString('en-NG',{minimumFractionDigits:2});
- document.getElementById('ctotal').textContent='₦'+Number(a).toLocaleString('en-NG',{minimumFractionDigits:2});
- document.getElementById('cnote').textContent=note;go('confirm');
+let balance = 248750;
+let balanceHidden = false;
+let pendingAction = null;
+let selectedNetwork = "MTN";
+
+const transactions = [
+{ name: "Transfer from Chioma", date: "Today, 2:14 PM", amount: 25000, type: "in" },
+{ name: "MTN Airtime", date: "Today, 11:30 AM", amount: -1000, type: "out" },
+{ name: "Electricity - Ikeja", date: "Yesterday", amount: -8500, type: "out" },
+{ name: "Salary - TechCorp", date: "Aug 12", amount: 185000, type: "in" },
+{ name: "Transfer to David", date: "Aug 11", amount: -15000, type: "out" },
+{ name: "Data - Airtel 2GB", date: "Aug 10", amount: -1200, type: "out" },
+{ name: "Cashback Reward", date: "Aug 9", amount: 350, type: "in" },
+{ name: "DSTV Subscription", date: "Aug 8", amount: -7900, type: "out" },
+];
+
+function formatMoney(n) {
+return (n >= 0 ? "+₦" : "-₦") + Math.abs(n).toLocaleString('en-NG');
 }
-function successTransfer(){document.getElementById('sname').textContent=transferData.name;document.getElementById('samount').textContent='₦'+Number(transferData.amount).toLocaleString('en-NG',{minimumFractionDigits:2});go('success')}
-function Nav({active}){return `<nav class="nav">
-<button class="${active==='home'?'active':''}" onclick="go('home')"><span class="ni">⌂</span>Home</button>
-<button class="${active==='payments'?'active':''}" onclick="go('payments')"><span class="ni">▣</span>Payments</button>
-<button class="${active==='finance'?'active':''}" onclick="go('finance')"><span class="ni">♢</span>Finance</button>
-<button class="${active==='cards'?'active':''}" onclick="go('cards')"><span class="ni">▤</span>Cards</button>
-<button class="${active==='profile'?'active':''}" onclick="go('profile')"><span class="ni">♙</span>Me</button></nav>`}
-document.querySelectorAll('Nav').forEach(n=>n.outerHTML=Nav({active:n.getAttribute('active')||''}));
+
+function updateBalance() {
+const el = document.getElementById("balance-display");
+el.textContent = balanceHidden ? "₦••••••" : "₦" + balance.toLocaleString('en-NG') + ".00";
+}
+
+function toggleBalance() {
+balanceHidden = !balanceHidden;
+updateBalance();
+}
+
+function renderTx(containerId, limit = null) {
+const list = document.getElementById(containerId);
+const data = limit ? transactions.slice(0, limit) : transactions;
+list.innerHTML = data.map(tx => `
+<div class="tx-item">
+<div class="tx-icon ${tx.type}">
+${tx.type === "in"
+? '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>'}
+</div>
+<div class="tx-details">
+<div class="tx-name">${tx.name}</div>
+<div class="tx-date">${tx.date}</div>
+</div>
+<div class="tx-amount ${tx.type}">${formatMoney(tx.amount)}</div>
+</div>
+`).join("");
+}
+
+function handleLogin(e) {
+e.preventDefault();
+document.getElementById("login-screen").style.display = "none";
+document.getElementById("app").style.display = "flex";
+renderTx("home-tx", 4);
+renderTx("full-tx");
+return false;
+}
+
+function switchView(view) {
+document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+document.getElementById(`view-${view}`).classList.add("active");
+
+document.querySelectorAll(".nav-item").forEach(btn => {
+btn.classList.toggle("active", btn.dataset.view === view);
+});
+
+const showHeader = view === "home";
+document.getElementById("home-header").style.display = showHeader ? "block" : "none";
+document.getElementById("bottom-nav").style.display =
+(view === "transfer" || view === "airtime" || view === "history") ? "none" : "flex";
+}
+
+function openTransfer() { switchView("transfer"); }
+function openAirtime() { switchView("airtime"); }
+
+function selectNetwork(btn) {
+document.querySelectorAll(".network-btn").forEach(b => b.classList.remove("active"));
+btn.classList.add("active");
+selectedNetwork = btn.dataset.net;
+}
+
+function startTransfer() {
+const account = document.getElementById("transfer-account").value.trim();
+const bank = document.getElementById("transfer-bank").value;
+const amount = parseFloat(document.getElementById("transfer-amount").value);
+
+if (!account || account.length < 10) return showToast("Enter a valid account number");
+if (!bank) return showToast("Select a bank");
+if (!amount || amount < 100) return showToast("Minimum transfer is ₦100");
+
+pendingAction = {
+type: "transfer",
+amount,
+desc: `Transfer of ₦${amount.toLocaleString()} to ${account}`
+};
+document.getElementById("pin-desc").textContent = pendingAction.desc;
+openPinModal();
+}
+
+function startAirtime() {
+const phone = document.getElementById("airtime-phone").value.trim();
+const amount = parseFloat(document.getElementById("airtime-amount").value);
+
+if (!phone || phone.length < 10) return showToast("Enter a valid phone number");
+if (!amount || amount < 50) return showToast("Minimum airtime is ₦50");
+
+pendingAction = {
+type: "airtime",
+amount,
+desc: `${selectedNetwork} Airtime ₦${amount.toLocaleString()} to ${phone}`
+};
+document.getElementById("pin-desc").textContent = pendingAction.desc;
+openPinModal();
+}
+
+function openPinModal() {
+document.getElementById("pin-modal").classList.add("show");
+document.querySelectorAll(".pin-inputs input").forEach(i => i.value = "");
+document.querySelector(".pin-inputs input").focus();
+}
+
+function closePinModal() {
+document.getElementById("pin-modal").classList.remove("show");
+}
+
+function movePin(el, next) {
+if (el.value && next < 4) {
+document.querySelectorAll(".pin-inputs input")[next].focus();
+}
+}
+
+function confirmPin() {
+const pins = [...document.querySelectorAll(".pin-inputs input")].map(i => i.value).join("");
+if (pins.length < 4) return showToast("Enter 4-digit PIN");
+
+// Demo accepts any 4 digits
+closePinModal();
+
+if (pendingAction) {
+balance -= pendingAction.amount;
+updateBalance();
+
+const name = pendingAction.type === "transfer"
+? `Transfer to Account`
+: `${selectedNetwork} Airtime`;
+
+transactions.unshift({
+name,
+date: "Just now",
+amount: -pendingAction.amount,
+type: "out"
+});
+
+renderTx("home-tx", 4);
+renderTx("full-tx");
+showToast("Transaction successful!");
+switchView("home");
+
+// Clear forms
+document.getElementById("transfer-account").value = "";
+document.getElementById("transfer-amount").value = "";
+document.getElementById("transfer-narration").value = "";
+document.getElementById("airtime-amount").value = "";
+}
+pendingAction = null;
+}
+
+function showToast(msg) {
+const t = document.getElementById("toast");
+t.textContent = msg;
+t.classList.add("show");
+setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+function toggleDarkMode() {
+const isDark = document.getElementById("dark-toggle").checked;
+document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+}
+
+function logout() {
+document.getElementById("app").style.display = "none";
+document.getElementById("login-screen").style.display = "flex";
+switchView("home");
+}
+
+// Close modal on overlay click
+document.getElementById("pin-modal").addEventListener("click", (e) => {
+if (e.target.id === "pin-modal") closePinModal();
+});
 </script>
 </body>
 </html>
